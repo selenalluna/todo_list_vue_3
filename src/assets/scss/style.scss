@@ -1,0 +1,139 @@
+@import "_nullstyle.scss";
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Roboto:wght@400;700&display=swap');
+
+body{
+    font-family: 'Montserrat', sans-serif;
+    // font-family: 'Roboto', sans-serif;
+    background-color: rgb(65, 65, 65);
+}
+.container{
+    max-width: 1200px; 
+    min-height: 94vh; 
+    margin: 20px auto;
+    display: flex;    
+}
+.delete {
+    flex: 0 1 auto;
+    padding: 0 10px;
+}
+.delete:hover {
+    color: red;
+}
+.btn {
+    display: inline-block;
+    border: 1px solid #6d9ca8;
+    background-color: #afe49f;;
+    border-radius: 20px;
+    padding: 5px 10px;
+}
+.btn:hover {
+  background-color: #dffdd6;
+  transition: 0.3s;
+}
+.btn:not(:hover) {
+  transition: 0.3s;
+}
+.btn:active {
+  background-color: #9bb6bd;
+}
+.input {    
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+.sidebar {
+    flex: 0 1 30%;
+    background-color: #d7f7ff;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    &__select {
+        margin: 20px;
+    }
+    &__list {
+        flex: 1 1 auto;
+    }
+    &__item {
+        padding: 10px 10px;
+        display: flex;
+        justify-content: space-between;
+    }
+    &__item-green {
+        background-color: rgb(183, 221, 178);
+    }
+    &__item-grey {
+        background-color: rgb(223, 223, 223);
+    }
+    &__title {
+        flex: 1 1 auto;
+        justify-self: center;
+    }
+    &__add {
+        background-color: #9bb6bd;
+        padding: 20px 10px;
+        border-radius: 0 0 10px 10px;
+    }
+    &__input {
+    }
+    &__btn {
+    }
+}
+.empty {
+    flex: 0 0 10px;
+}
+.main {    
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    &__title {
+        text-align: center;
+        font-size: 20px;
+        margin: 10px 0;
+    }
+    &__list {
+        flex: 1 1 auto;
+    }
+   &__checkbox {
+       margin-right: 10px;
+   }
+    &__item {
+        margin: 0 10px;
+        display: flex;
+        justify-content: space-between;
+    }
+    &__item:not(:last-child) {
+        margin-bottom: 10px;
+    }
+    &__task {
+        justify-self: start;
+        flex: 1 1 auto;
+    }
+    &__datetime {
+        margin-right: 10px;
+    }
+    &__add {
+        background-color: #9bb6bd;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 10px;
+        border-radius: 0 0 10px 10px;
+    }
+    &__input {
+        flex: 1 1 auto;
+        margin-right: 20px;
+    }
+
+    &__checkbox {
+    }
+
+    &__important {
+        margin-right: 20px;
+    }
+
+    &__btn {
+    }
+}

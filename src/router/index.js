@@ -1,20 +1,58 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "../views/Home.vue";
 
 const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home,
+    component: () => import("../views/Home.vue"),
   },
+  // {
+  //   path: "/list",
+  //   name: "list",
+  //   meta: { layout: "main" },
+  //   component: () => import("../views/List.vue"),
+    // children: [
+    //   {
+    //     path: "/list/:id",
+    //     name: "tasks",
+    //     components: { tasks: Tasks },
+    //   },
+    // ],
+  // },
+  // {
+  //   path: "/404",
+  //   name: "404",
+  //   component: () => import("../views/404.vue"),
+  // },
+  // {
+  //   path: "*",
+  //   redirect: "/404",
+  // },
   {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue"),
+    path: "/list1",
+    name: "list1",
+    meta: { layout: "main" },
+    component: () => import("../views/List1.vue"),
+  },
+    // children: [
+    //   {
+    //     path: "/list1/:id",
+    //     name: "tasks",
+    //     components: { tasks: Tasks },
+    //   },
+    // ],
+  // },
+  // {
+  //   path: "/list1",
+  //   name: "list1",
+  //   meta: { layout: "main" },
+  //   component: () => import("../views/List1.vue"),
+  // },
+  {
+    path: "/list2",
+    name: "list2",
+    meta: { layout: "main" },
+    component: () => import("../views/List2.vue"),
   },
 ];
 
