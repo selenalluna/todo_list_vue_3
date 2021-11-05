@@ -1,0 +1,120 @@
+<template>
+  <div class="main">
+    <h1 class="main__title">{{ allTodos[$route.params.id].title }}</h1>
+
+    <ul class="main__list">
+      <li
+        v-for="(task, idx) in allTodos[$route.params.id].tasks"
+        :key="idx"
+        class="main__item"
+      >
+        <input type="checkbox" class="filled-in" checked="checked" />
+        <p class="main__task">
+          {{ allTodos[$route.params.id].tasks[idx] }}
+        </p>
+        <p class="main__datetime">
+          {{ allTodos[$route.params.id].dates[idx] }}
+        </p>
+        <button v-on:click="this.removeTask(idx)" class="btn delete">x</button>
+      </li>
+    </ul>
+
+    <div class="main__add">
+      <input
+        class="main__input input"
+        type="text"
+        placeholder="Введите название дела"
+        v-bind:value="inputValue"
+        v-on:input="inputChangeHandler"
+        v-on:keypress.enter="AddAndClearInput(addNewTask)"
+      />
+      <input class="main__checkbox" type="checkbox" />
+      <p class="main__important">Срочное</p>
+      <div v-on:click="AddAndClearInput(addNewTask)" class="main__btn btn">
+        Добавить дело
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { mapMutations } from "vuex";
+export default {
+  data: () => ({
+    inputValue: "",
+  }),
+  computed: {
+    allTodos() {
+      return this.$store.state.todos;
+    },
+  },
+  methods: {
+    ...mapMutations(["addNewTask", "removeTask"]),
+
+    inputChangeHandler(event) {
+      this.inputValue = event.target.value;
+    },
+    AddAndClearInput(mutationName) {
+      if (this.inputValue !== "") {
+        let indexTo = this.idx;
+        let valueTo = this.inputValue;
+        mutationName({ indexTo, valueTo });
+        this.inputValue = "";
+      }
+    },
+  },
+};
+</script>
+
+<style lang="scss">
+.main {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-radius: 10px;
+  &__title {
+    font-weight: bold;
+    text-align: center;
+    font-size: 20px;
+    margin: 10px 0;
+  }
+  &__list {
+    flex: 1 1 auto;
+  }
+  &__checkbox {
+    margin-right: 10px;
+  }
+  &__item {
+    margin: 0 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &__item:not(:last-child) {
+    margin-bottom: 10px;
+  }
+  &__task {
+    justify-self: start;
+    flex: 1 1 auto;
+  }
+  &__datetime {
+    margin-right: 10px;
+  }
+  &__add {
+    background-color: #9bb6bd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 10px;
+    border-radius: 0 0 10px 10px;
+  }
+  &__input {
+    flex: 1 1 30%;
+    margin-right: 20px;    
+  }
+  &__important {
+    margin-right: 20px;
+  }
+}
+</style>

@@ -1,22 +1,24 @@
 <template>
   <div class="sidebar">
-    <select class="sidebar__select">
-      <option>Все</option>
-      <option>Несполненные</option>
-      <option>Исполненные</option>
-    </select>
+    <!-- <div class="input-field col s12">
+      <select>
+        <option value="" disabled selected>Choose your option</option>
+        <option value="1">Все</option>
+        <option value="2">Несполненные</option>
+        <option value="3">Исполненные</option>
+      </select>
+    </div> -->
 
     <ul class="sidebar__list">
       <router-link
-        v-for="(title, idx) in titles"
-        :key="urls[idx]"
-        :to="urls[idx]"
+        v-for="(title, idx) in allTodos"
+        :key="idx"
         tag="li"
-        active-class="active"
+        :to="'/list/' + idx"
         class="sidebar__item"
       >
-        <a class="sidebar__title">{{ titles[idx] }}</a>
-        <p class="delete" v-on:click="removeList(idx)">x</p>
+        <a class="sidebar__title">{{ allTodos[idx].title }}</a>
+        <button v-on:click="this.removeList(idx)" class="btn delete">x</button>
       </router-link>
     </ul>
 
@@ -27,9 +29,12 @@
         placeholder="Введите название списка"
         v-bind:value="inputValue"
         v-on:input="inputChangeHandler"
-        v-on:keypress.enter="addNewList"
+        v-on:keypress.enter="AddAndClearInput(addNewList)"
       />
-      <button class="sidebar__btn btn" v-on:click="addNewList">
+      <button
+        v-on:click="AddAndClearInput(addNewList)"
+        class="sidebar__btn btn"
+      >
         Добавить список
       </button>
     </div>
@@ -37,28 +42,59 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
 export default {
   data: () => ({
-    titles: ["List 1", "List 2"],
-    urls: ["/list1", "/list2"],
     inputValue: "",
-    lists: [],
   }),
+  computed: {
+    allTodos() {
+      return this.$store.state.todos;
+    },
+  },
   methods: {
+    ...mapMutations(["addNewList", "removeList"]),
+
     inputChangeHandler(event) {
       this.inputValue = event.target.value;
     },
-    addNewList() {
+    AddAndClearInput(mutationName) {
       if (this.inputValue !== "") {
-        this.titles.push(this.inputValue);
-        this.urls.push("/list" + this.titles.length);
+        mutationName(this.inputValue);
         this.inputValue = "";
       }
-    },
-    removeList(idx) {
-      this.titles.splice(idx, 1);
-      this.urls.splice(idx, 1);
     },
   },
 };
 </script>
+
+<style lang="scss">
+.sidebar {
+  flex: 0 1 30%;
+  background-color: #ffffff;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  &__select {
+    margin: 20px;
+  }
+  &__list {
+    flex: 1 1 auto;
+  }
+  &__item {
+    padding: 10px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__title {
+    flex: 1 1 auto;
+    justify-self: center;
+  }
+  &__add {
+    background-color: #9bb6bd;
+    padding: 20px 10px;
+    border-radius: 0 0 10px 10px;
+  }
+}</style>

@@ -2,18 +2,17 @@
   <div class="container">
     <Sidebar />
     <div class="empty"></div>
-    <MainHello />
+    <MainField />
   </div>
 </template>
 
 <script>
 import Sidebar from "../components/Sidebar.vue";
-import MainHello from "../components/MainHello.vue";
+import MainField from "../components/MainField.vue";
 export default {
   name: "home",
   components: {
-    Sidebar,
-    MainHello,
+    Sidebar, MainField
   },
 };
 </script>
@@ -26,7 +25,7 @@ body {
   max-width: 1200px;
   min-height: 94vh;
   margin: 20px auto;
-  display: flex;
+  display: flex;  
 }
 .empty {
   flex: 0 0 10px;
