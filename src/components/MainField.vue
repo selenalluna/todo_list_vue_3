@@ -8,11 +8,18 @@
         :key="idx"
         class="main__item"
       >
-        <input type="checkbox" class="filled-in" checked="checked" />
+        <p>
+          <label>
+            <input type="checkbox"/>
+            <span style="font-size: 1px; color: white;">Yellow</span>
+          </label>
+        </p>
         <p class="main__task">
           {{ allTodos[$route.params.id].tasks[idx] }}
         </p>
-        <p class="main__datetime">{{ allTodos[$route.params.id].dates[idx] }}</p>
+        <p class="main__datetime">
+          {{ allTodos[$route.params.id].dates[idx] }}
+        </p>
         <button v-on:click="removeThisTask(removeTask, idx)" class="btn delete">
           x
         </button>
@@ -30,7 +37,10 @@
       />
       <input class="main__checkbox" type="checkbox" />
       <p class="main__important">Срочное</p>
-      <div v-on:click="addAndClearInput(addNewTask), addThisDate(addDate, date)" class="main__btn btn">
+      <div
+        v-on:click="addAndClearInput(addNewTask), addThisDate(addDate, date)"
+        class="main__btn btn"
+      >
         Добавить дело
       </div>
     </div>
@@ -72,25 +82,6 @@ export default {
         indexList: idxList,
       });
     },
-    // formatDate() {
-    //   let options = {
-    //     day: "2-digit",
-    //     month: "2-digit",
-    //     year: "2-digit",
-    //     hour: "2-digit",
-    //     minute: "2-digit",
-    //   };
-    //   let date = new Date();
-    //   return new Intl.DateTimeFormat("ru-RU", options).format(date);
-    // },
-    // addThisDate(mutationName, date) {
-    //   let idxList = this.$route.params.id;
-    //   // mutationName({
-    //   //   index: idxList,
-    //   //   value: date,
-    //   // });
-    //   console.log("component: ", idxList, date);
-    // },
   },
 };
 </script>
