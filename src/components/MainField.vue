@@ -12,10 +12,10 @@
         <p class="main__task">
           {{ allTodos[$route.params.id].tasks[idx] }}
         </p>
-        <p class="main__datetime">
-          {{ allTodos[$route.params.id].dates[idx] }}
-        </p>
-        <button v-on:click="this.removeTask(idx)" class="btn delete">x</button>
+        <p class="main__datetime">{{ allTodos[$route.params.id].dates[idx] }}</p>
+        <button v-on:click="removeThisTask(removeTask, idx)" class="btn delete">
+          x
+        </button>
       </li>
     </ul>
 
@@ -26,11 +26,11 @@
         placeholder="Введите название дела"
         v-bind:value="inputValue"
         v-on:input="inputChangeHandler"
-        v-on:keypress.enter="AddAndClearInput(addNewTask)"
+        v-on:keypress.enter="addAndClearInput(addNewTask)"
       />
       <input class="main__checkbox" type="checkbox" />
       <p class="main__important">Срочное</p>
-      <div v-on:click="AddAndClearInput(addNewTask)" class="main__btn btn">
+      <div v-on:click="addAndClearInput(addNewTask), addThisDate(addDate, date)" class="main__btn btn">
         Добавить дело
       </div>
     </div>
@@ -54,14 +54,43 @@ export default {
     inputChangeHandler(event) {
       this.inputValue = event.target.value;
     },
-    AddAndClearInput(mutationName) {
+    addAndClearInput(mutationName) {
       if (this.inputValue !== "") {
-        let indexTo = this.idx;
-        let valueTo = this.inputValue;
-        mutationName({ indexTo, valueTo });
+        let idxList = this.$route.params.id;
+        let value = this.inputValue;
+        mutationName({
+          index: idxList,
+          value: value,
+        });
         this.inputValue = "";
       }
     },
+    removeThisTask(mutationName, idxTask) {
+      let idxList = this.$route.params.id;
+      mutationName({
+        indexTask: idxTask,
+        indexList: idxList,
+      });
+    },
+    // formatDate() {
+    //   let options = {
+    //     day: "2-digit",
+    //     month: "2-digit",
+    //     year: "2-digit",
+    //     hour: "2-digit",
+    //     minute: "2-digit",
+    //   };
+    //   let date = new Date();
+    //   return new Intl.DateTimeFormat("ru-RU", options).format(date);
+    // },
+    // addThisDate(mutationName, date) {
+    //   let idxList = this.$route.params.id;
+    //   // mutationName({
+    //   //   index: idxList,
+    //   //   value: date,
+    //   // });
+    //   console.log("component: ", idxList, date);
+    // },
   },
 };
 </script>
@@ -111,7 +140,7 @@ export default {
   }
   &__input {
     flex: 1 1 30%;
-    margin-right: 20px;    
+    margin-right: 20px;
   }
   &__important {
     margin-right: 20px;
