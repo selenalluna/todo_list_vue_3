@@ -15,7 +15,7 @@
         :key="idx"
         tag="li"
         :to="'/list/' + idx"
-        class="sidebar__item"
+        :class="(allTodos[idx].done === 2) ? 'sidebar__item sidebar__item_grey' : (allTodos[idx].done === 1) ? 'sidebar__item sidebar__item_green' : 'sidebar__item'"
       >
         <a class="sidebar__title">{{ allTodos[idx].title }}</a>
         <button v-on:click="this.removeList(idx)" class="btn delete">x</button>
@@ -88,12 +88,25 @@ export default {
     align-items: center;
     justify-content: space-between;
   }
+  &__item_green {
+    background-color: #e1fff5;
+  }
+  &__item_grey {
+    background-color: #e9e9e9;
+  }
+  &__item:hover {
+    background-color: #e7c8ab;
+    transition: 0.3s;
+  }
+  &__item:not(:hover) {
+    transition: 0.3s;
+  }
   &__title {
     flex: 1 1 auto;
     justify-self: center;
   }
   &__add {
-    background-color: #9bb6bd;
+    background-color: #a07955;
     padding: 20px 10px;
     border-radius: 0 0 10px 10px;
   }

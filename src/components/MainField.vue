@@ -10,10 +10,11 @@
       >
         <p>
           <label>
-            <input type="checkbox"/>
-            <span style="font-size: 1px; color: white;">Yellow</span>
+            <input type="checkbox" :checked="allTodos[$route.params.id].checked[idx]" v-on:click="changeThisChecked(changeChecked, idx)"/>
+            <span style="font-size: 1px; color: white">Yellow</span>
           </label>
         </p>
+        <div v-bind:class="allTodos[$route.params.id].important[idx] ? 'main__important-circle main__important-circle_red' : 'main__important-circle main__important-circle_white'"></div>
         <p class="main__task">
           {{ allTodos[$route.params.id].tasks[idx] }}
         </p>
@@ -30,15 +31,25 @@
       <input
         class="main__input input"
         type="text"
-        placeholder="Введите название дела"
+        placeholder="Введите текст дела"
         v-bind:value="inputValue"
         v-on:input="inputChangeHandler"
         v-on:keypress.enter="addAndClearInput(addNewTask)"
       />
-      <input class="main__checkbox" type="checkbox" />
+      <p>
+        <label>
+          <input
+            v-on:click="changeImportant"
+            :checked="important"
+            type="checkbox"
+            class="filled-in"
+          />
+          <span style="font-size: 1px">Filled in</span>
+        </label>
+      </p>
       <p class="main__important">Срочное</p>
       <div
-        v-on:click="addAndClearInput(addNewTask), addThisDate(addDate, date)"
+        v-on:click="addAndClearInput(addNewTask, important)"
         class="main__btn btn"
       >
         Добавить дело
@@ -52,6 +63,7 @@ import { mapMutations } from "vuex";
 export default {
   data: () => ({
     inputValue: "",
+    important: false,
   }),
   computed: {
     allTodos() {
@@ -59,20 +71,22 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(["addNewTask", "removeTask"]),
+    ...mapMutations(["addNewTask", "removeTask", "changeChecked"]),
 
     inputChangeHandler(event) {
       this.inputValue = event.target.value;
     },
-    addAndClearInput(mutationName) {
+    addAndClearInput(mutationName, important) {
       if (this.inputValue !== "") {
         let idxList = this.$route.params.id;
         let value = this.inputValue;
         mutationName({
           index: idxList,
           value: value,
+          imp: important,
         });
         this.inputValue = "";
+        if (important) {this.important = !this.important};
       }
     },
     removeThisTask(mutationName, idxTask) {
@@ -82,6 +96,23 @@ export default {
         indexList: idxList,
       });
     },
+    changeImportant() {
+      this.important = !this.important;
+    },
+    changeThisChecked(mutationName, idxTask) {
+      let idxList = this.$route.params.id;
+      mutationName({
+        indexTask: idxTask,
+        indexList: idxList,
+      });
+    },
+    // changeThisImportant(mutationName, idxTask) {
+    //   let idxList = this.$route.params.id;
+    //   mutationName({
+    //     indexTask: idxTask,
+    //     indexList: idxList,
+    //   });
+    // },
   },
 };
 </script>
@@ -102,9 +133,6 @@ export default {
   &__list {
     flex: 1 1 auto;
   }
-  &__checkbox {
-    margin-right: 10px;
-  }
   &__item {
     margin: 0 10px;
     display: flex;
@@ -114,6 +142,18 @@ export default {
   &__item:not(:last-child) {
     margin-bottom: 10px;
   }
+  &__important-circle {
+    border-radius: 50%;
+    height: 10px;
+    width: 10px;
+    margin-right: 10px;
+  }
+  &__important-circle_red {
+    background-color: rgb(173, 28, 28);
+  }
+  &__important-circle_white {
+    background-color: rgb(255, 255, 255);
+  }
   &__task {
     justify-self: start;
     flex: 1 1 auto;
@@ -122,7 +162,7 @@ export default {
     margin-right: 10px;
   }
   &__add {
-    background-color: #9bb6bd;
+    background-color: #a07955;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -135,6 +175,7 @@ export default {
   }
   &__important {
     margin-right: 20px;
+    color: white;
   }
 }
 </style>
